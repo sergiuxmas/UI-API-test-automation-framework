@@ -9,3 +9,7 @@
 <p>docker run -d -p 4444:4444 -p 5900:5900 --name selenium-chrome selenium/standalone-chrome:latest</p>
 <h3>Restart remote web driver container</h3>
 <p>docker restart selenium-chrome</p>
+
+<h3>Run</h3>
+<li>Selenium: mvn test -Pselenium</li>
+<li>Playwright: mvn test -Pplaywright</li>
