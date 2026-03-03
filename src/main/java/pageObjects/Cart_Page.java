@@ -1,5 +1,6 @@
 package pageObjects;
 
+import lombok.NoArgsConstructor;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -9,11 +10,11 @@ import utils.DriverFactory;
 
 import java.util.List;
 
-
+@NoArgsConstructor
 public class Cart_Page extends DriverFactory {
 
-    public Cart_Page() {
-    }
+    private final By cartItem = By.xpath("//div[@data-test='cart-list']//div[contains(@class,'cart_item_label')]");
+    private final By checkoutBtn = By.xpath("//*[@id=\"checkout\"]");
 
     public void open() {
         WebDriverWait wait = new WebDriverWait(driver, 10);
@@ -22,13 +23,13 @@ public class Cart_Page extends DriverFactory {
     }
 
     public int itemCount() {
-        final List<WebElement> cartItems = driver.findElements(By.xpath("//div[@data-test='cart-list']//div[contains(@class,'cart_item_label')]"));
+        final List<WebElement> cartItems = driver.findElements(cartItem);
         return cartItems.size();
     }
 
     public void checkNumberOfItems(int actual, int expected) {
         try {
-            Assert.assertEquals(actual, expected);
+            Assert.assertEquals(expected, actual);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -36,7 +37,7 @@ public class Cart_Page extends DriverFactory {
 
     public void clickCheckout() {
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement checkoutButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"checkout\"]")));
+        WebElement checkoutButton = wait.until(ExpectedConditions.visibilityOfElementLocated(checkoutBtn));
         checkoutButton.click();
     }
 
