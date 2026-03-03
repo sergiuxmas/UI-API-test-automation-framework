@@ -1,1 +1,125 @@
-/target/
+############################################
+# Maven / Java build outputs
+############################################
+**/target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.iml
+
+# Maven release / backup files
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# (Optional) Maven wrapper binaries (usually keep these in git)
+# .mvn/wrapper/maven-wrapper.jar
+
+############################################
+# IntelliJ IDEA
+############################################
+.idea/
+out/
+*.ipr
+*.iws
+.idea_modules/
+atlassian-ide-plugin.xml
+
+# IntelliJ / JetBrains caches
+**/.idea/**/workspace.xml
+**/.idea/**/tasks.xml
+**/.idea/**/usage.statistics.xml
+**/.idea/**/dictionaries
+**/.idea/**/shelf
+**/.idea/**/dataSources
+**/.idea/**/dataSources.local.xml
+
+############################################
+# Eclipse (in case someone uses it)
+############################################
+.project
+.classpath
+.settings/
+.factorypath
+
+############################################
+# VS Code (if used)
+############################################
+.vscode/
+
+############################################
+# OS / system files
+############################################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+############################################
+# Logs / temp files
+############################################
+logs/
+log/
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+*.bak
+
+############################################
+# Test artifacts (adjust to your ATF tools)
+############################################
+# Surefire / Failsafe reports
+surefire-reports/
+failsafe-reports/
+
+# Common reporting outputs (Allure / Extent / Serenity, etc.)
+allure-results/
+allure-report/
+extent-reports/
+serenity/
+reports/
+test-output/
+
+# Screenshots / videos / downloads produced by UI tests
+screenshots/
+videos/
+downloads/
+
+############################################
+# Coverage
+############################################
+coverage/
+jacoco.exec
+jacoco*.exec
+/site/
+*.lcov
+
+############################################
+# Environment / secrets
+############################################
+.env
+.env.*
+!.env.example
+
+# Local config overrides (keep examples in git)
+config/local.properties
+application-local.properties
+
+############################################
+# Misc
+############################################
+*.pid
+*.seed
+*.orig
