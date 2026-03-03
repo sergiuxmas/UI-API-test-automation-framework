@@ -2,7 +2,7 @@
 Feature: Login Test 
 	
 	Background: Open browser and navigate to login page
-	Given User is on login page 
+	Given User is on login page
 	
 	Scenario: Check login with invalid credentials 
 		When User enters invalid username or invalid password 

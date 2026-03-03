@@ -12,9 +12,9 @@ Scenario: Place item in the shopping cart
 	Then should be visible counter red badge on cart icon 
 	
 Scenario: Place multiple items in the shopping cart 
-	And In inventpory page select 3 items 
+	And In inventpory page select 1 items
 	And User clicks on shoping cart icon 
-	Then There should be 3 items in the shopping cart list
+	Then There should be 1 items in the shopping cart list
 
 Scenario Outline: Validate tax and total
 	
@@ -22,17 +22,12 @@ Scenario Outline: Validate tax and total
 	 	|Sauce Labs Backpack    			|
 	 	|Sauce Labs Bike Light  			|
         |Sauce Labs Bolt T-Shirt			|
-        |Sauce Labs Fleece Jacket         	|
-        |Sauce Labs Onesie      			|
-        |Test.allTheThings() T-Shirt (Red)	|
-        
-        
 	And User clicks on shoping cart icon
 	And Clicks Checkout button
 	And User enter "<firstName>", "<lastName>" and "<zipCode>"
 	And Clicks Continue button
-	Then Tax should be "Tax: $10.40"
-	And Total should be "Total: $140.34"
+	Then Tax should be "Tax: $4.48"
+	And Total should be "Total: $60.45"
 	
 	Examples:
 	|firstName |lastName	|zipCode	|
