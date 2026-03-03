@@ -16,9 +16,12 @@ public class Inventory_Main_Page extends DriverFactory {
     public Inventory_Main_Page() {
     }
 
-    WebDriverWait wait = new WebDriverWait(driver, 10);
+    public void open() {
+        driver.get("https://www.saucedemo.com/inventory.html");
+    }
 
     public void clickAddButton() throws Exception {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement btnAddToCart1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-test='add-to-cart-sauce-labs-backpack']")));
         btnAddToCart1.click();
     }
@@ -34,6 +37,7 @@ public class Inventory_Main_Page extends DriverFactory {
 
     public void selectItems(int n) {
         // make sure inventory page is loaded
+        WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("inventory_container")));
 
         for (int i = 0; i < n; i++) {
@@ -62,6 +66,7 @@ public class Inventory_Main_Page extends DriverFactory {
     }
 
     public void clickOnCart() {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement cart = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@class,'shopping_cart_link')]")));
         cart.click();
     }

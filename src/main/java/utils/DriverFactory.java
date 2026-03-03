@@ -7,8 +7,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import pageObjects.Inventory_Main_Page;
-import pageObjects.Login_Page;
 
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -16,8 +14,6 @@ import java.util.concurrent.TimeUnit;
 public class DriverFactory {
 
     public static WebDriver driver;
-    public static Login_Page loginPage;
-    public static Inventory_Main_Page inventoryMainPage;
 
     public static void initWebDriver() {
         try {

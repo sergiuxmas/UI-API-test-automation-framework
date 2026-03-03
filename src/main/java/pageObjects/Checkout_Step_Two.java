@@ -13,21 +13,18 @@ public class Checkout_Step_Two extends DriverFactory {
     public Checkout_Step_Two() {
     }
 
-    WebDriverWait wait = new WebDriverWait(driver, 10);
-
     public void open() {
         driver.get("https://www.saucedemo.com/checkout-step-two.html");
-        WebDriverWait wait = new WebDriverWait(driver, 10);
     }
 
     public void checkTax(String taxValue) {
-        open();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement tax = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='summary_tax_label']")));
         Assert.assertEquals(tax.getText(), taxValue);
     }
 
     public void checkTotal(String totalValue) {
-        open();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement total = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='summary_total_label']")));
         Assert.assertEquals(total.getText(), totalValue);
     }
