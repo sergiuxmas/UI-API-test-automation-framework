@@ -9,6 +9,8 @@
 <p>docker run -d -p 4444:4444 -p 7900:7900 --name selenium-chrome selenium/standalone-chrome:latest</p>
 <p>You can watch the browser at: http://localhost:7900</p>
 <p>Password: secret</p>
+<h3>Remote driver status API</h3>
+<p>http://localhost:4444/status</p>
 
 <h3>Restart remote web driver container</h3>
 <p>docker restart selenium-chrome</p>
