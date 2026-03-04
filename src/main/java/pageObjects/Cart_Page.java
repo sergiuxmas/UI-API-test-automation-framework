@@ -1,6 +1,6 @@
 package pageObjects;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import ui.BasePage;
 import ui.UiEngine;
 
@@ -23,7 +23,7 @@ public class Cart_Page extends BasePage {
 
     public void checkNumberOfItems(int actual, int expected) {
         try {
-            Assert.assertEquals(expected, actual);
+            Assertions.assertEquals(expected, actual);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

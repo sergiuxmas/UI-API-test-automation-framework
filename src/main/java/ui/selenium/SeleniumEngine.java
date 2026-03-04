@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import ui.UiEngine;
 
+import java.time.Duration;
 import java.util.List;
 
 public class SeleniumEngine implements UiEngine {
@@ -16,7 +17,7 @@ public class SeleniumEngine implements UiEngine {
     @Override
     public void start() {
         driver = WebDriverFactory.getDriver();
-        wait = new WebDriverWait(driver, 10);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     @Override
@@ -67,7 +68,7 @@ public class SeleniumEngine implements UiEngine {
     @Override
     public void waitVisible(String selectorType, String selector, int timeoutSeconds) {
         By by = toBy(selectorType, selector);
-        new WebDriverWait(getDriver(), timeoutSeconds)
+        new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutSeconds))
                 .until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
@@ -84,7 +85,7 @@ public class SeleniumEngine implements UiEngine {
 
     @Override
     public void waitUrlIs(String url, int timeoutSeconds) {
-        new WebDriverWait(getDriver(), timeoutSeconds)
+        new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutSeconds))
                 .until(ExpectedConditions.urlToBe(url));
     }
 
@@ -99,7 +100,7 @@ public class SeleniumEngine implements UiEngine {
     @Override
     public void clickAt(String locatorType, String locator, int index) {
         By by = toBy(locatorType, locator);
-        WebDriverWait wait = new WebDriverWait(getDriver(), 10L);
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         List<WebElement> elements = getDriver().findElements(by);
         if (elements.size() <= index) throw new RuntimeException("Index out of range: " + index);
         WebElement el = elements.get(index);

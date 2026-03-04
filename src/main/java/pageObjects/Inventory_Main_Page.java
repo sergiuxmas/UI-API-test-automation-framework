@@ -1,10 +1,9 @@
 package pageObjects;
 
 
+import org.junit.jupiter.api.Assertions;
 import ui.BasePage;
 import ui.UiEngine;
-
-import static org.junit.Assert.assertTrue;
 
 public class Inventory_Main_Page extends BasePage {
 
@@ -31,7 +30,7 @@ public class Inventory_Main_Page extends BasePage {
     }
 
     public void visibilityOfRedBadgeCounter() {
-        assertTrue("Red badge is not visible", ui.isVisible("xpath", redBadge));
+        Assertions.assertTrue(ui.isVisible("xpath", redBadge), "Red badge is not visible");
     }
 
     public void selectItems(int n) {

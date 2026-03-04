@@ -1,10 +1,8 @@
 package pageObjects;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import ui.BasePage;
 import ui.UiEngine;
-
-import static org.junit.Assert.assertTrue;
 
 public class LoginPage extends BasePage {
 
@@ -31,12 +29,12 @@ public class LoginPage extends BasePage {
     }
 
     public void visibilityOfInvalidCredentialsMsg() {
-        assertTrue("Invalid credentials message is not visible", ui.isVisible("xpath", errorBtn));
+        Assertions.assertTrue(ui.isVisible("xpath", errorBtn), "Invalid credentials message is not visible");
     }
 
     public void accessToInventoryPage() {
         String expected = "https://www.saucedemo.com/inventory.html";
         ui.waitUrlIs(expected, 10);
-        Assert.assertEquals(expected, ui.currentUrl());
+        Assertions.assertEquals(expected, ui.currentUrl());
     }
 }
