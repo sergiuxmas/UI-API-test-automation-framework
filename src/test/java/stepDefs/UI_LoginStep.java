@@ -6,14 +6,18 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import pageObjects.Login_Page;
+import pageObjects.LoginPage;
 
 import java.util.List;
 
 
 public class UI_LoginStep {
 
-    public Login_Page loginPage = new Login_Page();
+    public LoginPage loginPage;
+
+    public UI_LoginStep() {
+        this.loginPage = new LoginPage(Hooks.ui());
+    }
 
     @Given("User is on login page")
     public void user_is_on_login_page() {

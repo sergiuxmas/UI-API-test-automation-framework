@@ -1,34 +1,33 @@
 package pageObjects;
 
 
-import lombok.NoArgsConstructor;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import utils.DriverFactory;
+import ui.BasePage;
+import ui.UiEngine;
 
-@NoArgsConstructor
-public class Checkout_Step_Two extends DriverFactory {
+public class Checkout_Step_Two extends BasePage {
 
-    private final By summaryTax = By.xpath("//div[@class='summary_tax_label']");
-    private final By summaryTotal = By.xpath("//div[@class='summary_total_label']");
+    private static final String summaryTax = "//div[@class='summary_tax_label']";
+    private static final String summaryTotal = "//div[@class='summary_total_label']";
+
+    public Checkout_Step_Two(UiEngine ui) {
+        super(ui);
+    }
 
     public void open() {
-        driver.get("https://www.saucedemo.com/checkout-step-two.html");
+        openAndWait("https://www.saucedemo.com/checkout-step-two.html", summaryTax, 10);
     }
 
-    public void checkTax(String taxValue) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement tax = wait.until(ExpectedConditions.visibilityOfElementLocated(summaryTax));
-        Assert.assertEquals(tax.getText(), taxValue);
+    public void checkTax(String expectedTax) {
+        ui.waitVisible("xpath", summaryTax, 10);
+        String actualTax = ui.text("xpath", summaryTax).trim();
+        Assert.assertEquals(actualTax, expectedTax);
     }
 
-    public void checkTotal(String totalValue) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement total = wait.until(ExpectedConditions.visibilityOfElementLocated(summaryTotal));
-        Assert.assertEquals(total.getText(), totalValue);
+    public void checkTotal(String expectedTax) {
+        ui.waitVisible("xpath", summaryTotal, 10);
+        String actualTax = ui.text("xpath", summaryTotal).trim();
+        Assert.assertEquals(actualTax, expectedTax);
     }
 
 }

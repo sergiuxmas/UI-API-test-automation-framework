@@ -10,11 +10,19 @@ import java.util.List;
 
 public class UI_OrdersStep {
 
-    public Login_Page loginPage = new Login_Page();
-    public Inventory_Main_Page inventoryMainPage = new Inventory_Main_Page();
-    public Cart_Page cartPage = new Cart_Page();
-    public Checkout_Step_One checkoutStepOne = new Checkout_Step_One();
-    public Checkout_Step_Two checkoutStepTwo = new Checkout_Step_Two();
+    public LoginPage loginPage;
+    public Inventory_Main_Page inventoryMainPage;
+    public Cart_Page cartPage;
+    public Checkout_Step_One checkoutStepOne;
+    public Checkout_Step_Two checkoutStepTwo;
+
+    public UI_OrdersStep() {
+        this.loginPage = new LoginPage(Hooks.ui());
+        this.inventoryMainPage = new Inventory_Main_Page(Hooks.ui());
+        this.cartPage = new Cart_Page(Hooks.ui());
+        this.checkoutStepOne = new Checkout_Step_One(Hooks.ui());
+        this.checkoutStepTwo = new Checkout_Step_Two(Hooks.ui());
+    }
 
     @When("The user enter a valid credentials")
     public void the_user_enter_a_valid_credentials() {
@@ -28,9 +36,13 @@ public class UI_OrdersStep {
         loginPage.clickLoginButton();
     }
 
+    @And("open shopping cart")
+    public void open_shopping_cart() {
+        inventoryMainPage.open();
+    }
+
     @When("clicks button to add item in cart")
     public void clicks_button_to_add_item_in_cart() throws Exception {
-        inventoryMainPage.open();
         inventoryMainPage.clickAddButton();
     }
 
@@ -39,13 +51,13 @@ public class UI_OrdersStep {
         inventoryMainPage.visibilityOfRedBadgeCounter();
     }
 
-    @When("In inventpory page select {int} items")
+    @When("In inventory page select {int} items")
     public void in_inventpory_page_select_items(Integer n) throws Exception {
         inventoryMainPage.open();
         inventoryMainPage.selectItems(n);
     }
 
-    @And("User clicks on shoping cart icon")
+    @And("User clicks on shopping cart icon")
     public void user_clicks_on_shoping_cart_icon() {
         inventoryMainPage.open();
         inventoryMainPage.clickOnCart();

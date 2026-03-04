@@ -11,7 +11,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-public class DriverFactory {
+public class WebDriverFactory {
 
     public static WebDriver driver;
 
@@ -19,14 +19,18 @@ public class DriverFactory {
         try {
             String browser = ReadConfigFile.readConfig("browser");
             String webSiteUrl = ReadConfigFile.readConfig("URL");
+            String headless = ReadConfigFile.readConfig("headless");
 
             switch (browser.toLowerCase()) {
 
                 case "chrome":
                     ChromeOptions options = new ChromeOptions();
-//				options.addArguments("--headless=false");
+                    if (Boolean.parseBoolean(headless)) {
+                        options.addArguments("--headless=new");
+                    }
                     options.addArguments("--no-sandbox");
                     options.addArguments("--disable-dev-shm-usage");
+                    options.addArguments("--incognito");
                     options.addArguments("--window-size=1920,1080");
                     driver = new RemoteWebDriver(
                             new URL("http://localhost:4444/wd/hub"), options);//wd/hub
@@ -52,9 +56,17 @@ public class DriverFactory {
 
     }
 
+    public static WebDriver getDriver() {
+        if (driver == null) {
+            initWebDriver();
+        }
+        return driver;
+    }
+
     public static void tearDownDrivers() {
         if (driver != null) {
             driver.quit();
+            driver = null;   // IMPORTANT
         }
     }
 
