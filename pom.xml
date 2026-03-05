@@ -45,10 +45,10 @@
                         <includes>
                             <include>**/MainRunner.java</include>
                         </includes>
-                        <testFailureIgnore>true</testFailureIgnore>
                         <suiteXmlFiles>
                             <suiteXmlFile>testng.xml</suiteXmlFile>
                         </suiteXmlFiles>
+                        <testFailureIgnore>true</testFailureIgnore>
                         <systemPropertyVariables>
                             <browser.engine>${browser.engine}</browser.engine>
                         </systemPropertyVariables>
@@ -118,11 +118,6 @@
             <artifactId>selenium-java</artifactId>
             <version>4.41.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.6.2</version>
-        </dependency>
 
         <!-- cucumber dependencies -->
         <dependency>
@@ -133,11 +128,6 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -160,7 +150,6 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>7.10.2</version>
-            <scope>test</scope>
         </dependency>
 
         <!-- rest assured dependencies -->

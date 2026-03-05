@@ -1,7 +1,7 @@
 package pageObjects;
 
 
-import org.junit.jupiter.api.Assertions;
+import org.testng.Assert;
 import ui.BasePage;
 import ui.UiEngine;
 
@@ -21,13 +21,13 @@ public class Checkout_Step_Two extends BasePage {
     public void checkTax(String expectedTax) {
         ui.waitVisible("xpath", summaryTax, 10);
         String actualTax = ui.text("xpath", summaryTax).trim();
-        Assertions.assertEquals(expectedTax, actualTax);
+        Assert.assertEquals(actualTax, expectedTax);
     }
 
     public void checkTotal(String expectedTax) {
         ui.waitVisible("xpath", summaryTotal, 10);
         String actualTax = ui.text("xpath", summaryTotal).trim();
-        Assertions.assertEquals(expectedTax, actualTax);
+        Assert.assertEquals(actualTax, expectedTax);
     }
 
 }
