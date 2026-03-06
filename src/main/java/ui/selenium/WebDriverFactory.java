@@ -32,8 +32,11 @@ public class WebDriverFactory {
                     options.addArguments("--disable-dev-shm-usage");
                     options.addArguments("--incognito");
                     options.addArguments("--window-size=1920,1080");
-                    driver = new RemoteWebDriver(
-                            new URL("http://localhost:4444/wd/hub"), options);
+                    String remoteUrl = System.getenv().getOrDefault(
+                            "SELENIUM_REMOTE_URL",
+                            "http://localhost:4444/wd/hub"
+                    );
+                    driver = new RemoteWebDriver(new URL(remoteUrl), options);
                     break;
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
