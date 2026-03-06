@@ -55,6 +55,11 @@
                     </configuration>
                 </plugin>
                 <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+                <plugin>
                     <groupId>net.masterthought</groupId>
                     <artifactId>maven-cucumber-reporting</artifactId>
                     <version>5.0.0</version>
@@ -68,9 +73,7 @@
                             <configuration>
                                 <projectName>UI-and-API-Automation-Tests</projectName>
                                 <outputDirectory>target/cucumber-reports/advanced-reports</outputDirectory>
-                                <cucumberOutput>target/cucumber-reports/cucumber.json</cucumberOutput>
                                 <buildNumber>1</buildNumber>
-                                <parallelTesting>false</parallelTesting>
                                 <skip>false</skip>
                                 <inputDirectory>${project.build.directory}/cucumber-reports</inputDirectory>
                                 <jsonFiles> <!-- supports wildcard or name pattern -->

@@ -1,0 +1,70 @@
+name: ATF Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      # Selenium in Docker (remote webdriver)
+      - name: Start Selenium (standalone Chrome)
+        run: |
+          docker run -d --name selenium \
+            -p 4444:4444 \
+            -p 7900:7900 \
+            --shm-size="2g" \
+            selenium/standalone-chrome:latest
+
+      - name: Wait for Selenium
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:4444/wd/hub/status | grep -q '"ready":true'; then
+              echo "Selenium is ready"; exit 0
+            fi
+            echo "Waiting for Selenium... ($i)"
+            sleep 2
+          done
+          echo "Selenium not ready in time"
+          docker logs selenium
+          exit 1
+
+      # Playwright (Java) browser install
+      - name: Install Playwright browsers (with OS deps)
+        run: |
+          mvn -q -DskipTests exec:java \
+            -Dexec.mainClass=com.microsoft.playwright.CLI \
+            -Dexec.args="install --with-deps"
+
+      - name: Run tests
+        env:
+          SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+        run: mvn -B test
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            target/surefire-reports
+            target/failsafe-reports
+            target/site
+
+      - name: Selenium logs (debug)
+        if: always()
+        run: docker logs selenium || true
