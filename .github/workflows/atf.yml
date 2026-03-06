@@ -2,8 +2,22 @@ name: ATF Tests
 
 on:
   workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to run against"
+        required: false
+        default: "master"
+      profile:
+        description: "Maven profile to run"
+        required: false
+        default: "selenium"
+        type: choice
+        options:
+          - playwright
+          - selenium
+
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
 
 jobs:
@@ -13,16 +27,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # manual run: checkout selected branch (default master)
+          # push/PR: checkout triggering ref
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.branch || github.ref_name }}
 
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: "17"
           cache: maven
 
-      # Selenium in Docker (remote webdriver)
+      - name: Set up Node (LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # Only for selenium profile (manual run)
       - name: Start Selenium (standalone Chrome)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.profile == 'selenium' }}
         run: |
           docker run -d --name selenium \
             -p 4444:4444 \
@@ -31,29 +55,61 @@ jobs:
             selenium/standalone-chrome:latest
 
       - name: Wait for Selenium
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.profile == 'selenium' }}
         run: |
-          for i in {1..30}; do
-            if curl -s http://localhost:4444/wd/hub/status | grep -q '"ready":true'; then
-              echo "Selenium is ready"; exit 0
+          set -e
+          for i in {1..60}; do
+            OUT1="$(curl -s http://localhost:4444/status || true)"
+            OUT2="$(curl -s http://localhost:4444/wd/hub/status || true)"
+
+            if echo "$OUT1" | grep -Eq '"ready"[[:space:]]*:[[:space:]]*true'; then
+              echo "Selenium ready via /status"; exit 0
             fi
+            if echo "$OUT2" | grep -Eq '"ready"[[:space:]]*:[[:space:]]*true'; then
+              echo "Selenium ready via /wd/hub/status"; exit 0
+            fi
+
             echo "Waiting for Selenium... ($i)"
             sleep 2
           done
+
           echo "Selenium not ready in time"
-          docker logs selenium
+          docker logs selenium || true
           exit 1
 
-      # Playwright (Java) browser install
+      # Only needed if Playwright profile is selected (manual run)
       - name: Install Playwright browsers (with OS deps)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.profile == 'playwright' }}
         run: |
           mvn -q -DskipTests exec:java \
             -Dexec.mainClass=com.microsoft.playwright.CLI \
             -Dexec.args="install --with-deps"
 
-      - name: Run tests
+      - name: Run tests (manual run)
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         env:
-          SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-        run: mvn -B test
+          NODE_NO_WARNINGS: "1"
+        run: |
+          echo "Branch: ${{ inputs.branch }}"
+          echo "Profile: ${{ inputs.profile }}"
+          
+          if [ "${{ inputs.profile }}" = "playwright" ]; then
+            echo "Running Playwright profile"
+            mvn -B test -Pplaywright
+          else
+            echo "Running Selenium profile"
+            export SELENIUM_REMOTE_URL="http://localhost:4444/"
+            mvn -B test -Pselenium
+          fi
+
+      - name: Run tests (push/PR default)
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+        env:
+          NODE_NO_WARNINGS: "1"
+        run: |
+          echo "Event: ${{ github.event_name }} on ref ${{ github.ref_name }}"
+          echo "Defaulting to profile: playwright"
+          mvn -B test -Pplaywright
 
       - name: Upload reports
         if: always()

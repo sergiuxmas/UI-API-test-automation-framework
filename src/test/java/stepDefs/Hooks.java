@@ -8,28 +8,60 @@ import ui.UiEngineFactory;
 
 public class Hooks {
     public static ThreadLocal<UiEngine> ENGINE = new ThreadLocal<>();
+    public static final ThreadLocal<RestAssuredExtension> API = new ThreadLocal<>();
 
     @Before("@back-end")
     public void TestSetup() {
-        RestAssuredExtension RestAssuredExtension = new RestAssuredExtension();
+        API.set(new RestAssuredExtension());
     }
 
     @Before("@front-end")
-    public void beforeScenario() {
+    public void uiSetup() {
+        String sysProp = System.getProperty("browser.engine");
+        System.out.println("browser.engine sysprop = " + sysProp);
+
         UiEngine engine = UiEngineFactory.create();
-        engine.start();
         ENGINE.set(engine);
-        System.out.println("UI Engine started: " + engine.getClass().getSimpleName());
+
+        try {
+            engine.start();
+            System.out.println("UI Engine started: " + engine.getClass().getSimpleName());
+        } catch (RuntimeException e) {
+            safeStop(engine);
+            ENGINE.remove();
+            throw e;
+        }
     }
 
     @After("@front-end")
-    public void afterScenario() {
+    public void uiTearDown() {
         UiEngine engine = ENGINE.get();
-        if (engine != null) engine.stop();
+        safeStop(engine);
         ENGINE.remove();
     }
 
+    @After("@back-end")
+    public void apiTearDown() {
+        API.remove();
+    }
+
     public static UiEngine ui() {
-        return ENGINE.get();
+        UiEngine e = ENGINE.get();
+        if (e == null) {
+            throw new IllegalStateException(
+                    "UI engine is not initialized for this thread. "
+                            + "Are you calling Hooks.ui() from a @back-end scenario or missing @front-end tag?"
+            );
+        }
+        return e;
+    }
+
+    private static void safeStop(UiEngine engine) {
+        if (engine == null) return;
+        try {
+            engine.stop();
+        } catch (Exception ex) {
+            System.err.println("Warning: engine.stop() failed: " + ex.getClass().getSimpleName() + ": " + ex.getMessage());
+        }
     }
 }
