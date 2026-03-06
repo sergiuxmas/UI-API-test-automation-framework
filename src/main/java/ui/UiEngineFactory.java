@@ -1,20 +1,21 @@
 package ui;
 
-import lombok.NoArgsConstructor;
 import ui.playwright.PlaywrightEngine;
 import ui.selenium.SeleniumEngine;
 
-@NoArgsConstructor
 public final class UiEngineFactory {
+    private UiEngineFactory() {
+    }
 
     public static UiEngine create() {
-        String engine = System.getProperty("browser.engine", "playwright").toLowerCase();
+        String engine = System.getProperty("browser.engine", "playwright").trim().toLowerCase();
         switch (engine) {
             case "playwright":
                 return new PlaywrightEngine();
             case "selenium":
-            default:
                 return new SeleniumEngine();
+            default:
+                throw new IllegalArgumentException("Unknown browser.engine=" + engine);
         }
     }
 }

@@ -2,6 +2,7 @@ package ui.selenium;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -20,7 +21,7 @@ public class WebDriverFactory {
         try {
             String browser = ReadConfigFile.readConfig("browser");
             String webSiteUrl = ReadConfigFile.readConfig("URL");
-            String headless = ReadConfigFile.readConfig("headless");
+            String headless = ReadConfigFile.readConfigOrDefault("headless", "false").trim();
 
             switch (browser.toLowerCase()) {
                 case "chrome":
@@ -32,11 +33,13 @@ public class WebDriverFactory {
                     options.addArguments("--disable-dev-shm-usage");
                     options.addArguments("--incognito");
                     options.addArguments("--window-size=1920,1080");
-                    String remoteUrl = System.getenv().getOrDefault(
-                            "SELENIUM_REMOTE_URL",
-                            "http://localhost:4444/wd/hub"
-                    );
-                    driver = new RemoteWebDriver(new URL(remoteUrl), options);
+                    String remoteUrl = System.getenv("SELENIUM_REMOTE_URL");
+                    if (remoteUrl != null && !remoteUrl.trim().isEmpty()) {
+                        driver = new RemoteWebDriver(new URL(remoteUrl.trim()), options);
+                    } else {
+                        WebDriverManager.chromedriver().setup();
+                        driver = new ChromeDriver(options);
+                    }
                     break;
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
