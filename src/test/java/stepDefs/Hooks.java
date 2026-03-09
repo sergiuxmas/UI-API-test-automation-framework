@@ -16,7 +16,7 @@ public class Hooks {
         API.set(new RestAssuredExtension());
     }
 
-    @Before("@front-end")
+    @Before(value = "@front-end", order = 0)
     public void uiSetup() {
         String sysProp = System.getProperty("browser.engine");
         LogCollector.info("browser.engine sysprop = " + sysProp);

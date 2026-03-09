@@ -2,6 +2,7 @@ package stepDefs;
 
 
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -16,11 +17,9 @@ public class UI_LoginStep {
 
     public LoginPage loginPage;
 
-    private LoginPage loginPage() {
-        if (loginPage == null) {
-            loginPage = new LoginPage(Hooks.ui());
-        }
-        return loginPage;
+    @Before(value = "@front-end", order = 1)
+    public void initPages() {
+        this.loginPage = new LoginPage(Hooks.ui());
     }
 
     @Given("User is on login page")
@@ -30,7 +29,7 @@ public class UI_LoginStep {
     }
 
     @When("User enters invalid username or invalid password")
-    public void user_enters_invalid_username_or_invalid_password(DataTable credentials) throws Exception {
+    public void user_enters_invalid_username_or_invalid_password(DataTable credentials) {
         List<List<String>> data = credentials.asLists();
         String username = data.get(1).get(0);
         String password = data.get(1).get(1);
@@ -43,7 +42,7 @@ public class UI_LoginStep {
     }
 
     @Then("Should be visible message for incorrect credentials")
-    public void should_be_visible_message_for_incorrect_credentials() throws Exception {
+    public void should_be_visible_message_for_incorrect_credentials() {
         loginPage.visibilityOfInvalidCredentialsMsg();
     }
 
