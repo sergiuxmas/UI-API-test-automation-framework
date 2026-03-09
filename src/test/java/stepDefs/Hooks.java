@@ -5,6 +5,7 @@ import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import ui.UiEngine;
 import ui.UiEngineFactory;
+import utils.LogCollector;
 
 public class Hooks {
     public static ThreadLocal<UiEngine> ENGINE = new ThreadLocal<>();
@@ -15,17 +16,17 @@ public class Hooks {
         API.set(new RestAssuredExtension());
     }
 
-    @Before("@front-end")
+    @Before(value = "@front-end", order = 0)
     public void uiSetup() {
         String sysProp = System.getProperty("browser.engine");
-        System.out.println("browser.engine sysprop = " + sysProp);
+        LogCollector.info("browser.engine sysprop = " + sysProp);
 
         UiEngine engine = UiEngineFactory.create();
         ENGINE.set(engine);
 
         try {
             engine.start();
-            System.out.println("UI Engine started: " + engine.getClass().getSimpleName());
+            LogCollector.info("UI Engine started: " + engine.getClass().getSimpleName());
         } catch (RuntimeException e) {
             safeStop(engine);
             ENGINE.remove();
@@ -46,14 +47,11 @@ public class Hooks {
     }
 
     public static UiEngine ui() {
-        UiEngine e = ENGINE.get();
-        if (e == null) {
-            throw new IllegalStateException(
-                    "UI engine is not initialized for this thread. "
-                            + "Are you calling Hooks.ui() from a @back-end scenario or missing @front-end tag?"
-            );
+        UiEngine engine = ENGINE.get();
+        if (engine == null) {
+            throw new IllegalStateException("UI Engine is not initialized. Did you tag the scenario with @front-end?");
         }
-        return e;
+        return engine;
     }
 
     private static void safeStop(UiEngine engine) {
@@ -61,7 +59,7 @@ public class Hooks {
         try {
             engine.stop();
         } catch (Exception ex) {
-            System.err.println("Warning: engine.stop() failed: " + ex.getClass().getSimpleName() + ": " + ex.getMessage());
+            LogCollector.error("Warning: engine.stop() failed: " + ex.getClass().getSimpleName() + ": " + ex.getMessage());
         }
     }
 }

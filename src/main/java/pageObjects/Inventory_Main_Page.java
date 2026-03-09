@@ -4,6 +4,7 @@ package pageObjects;
 import org.testng.Assert;
 import ui.BasePage;
 import ui.UiEngine;
+import utils.LogCollector;
 
 public class Inventory_Main_Page extends BasePage {
 
@@ -24,7 +25,6 @@ public class Inventory_Main_Page extends BasePage {
     }
 
     public void clickAddButton() {
-//        ui.waitVisible("xpath", shoppingCart, 10);
         ui.waitVisible("xpath", addToCartBtn, 10);
         ui.click("xpath", addToCartBtn);
     }
@@ -49,7 +49,7 @@ public class Inventory_Main_Page extends BasePage {
             // On SauceDemo the items are aligned by index: the first button belongs to first item, etc.
             // We read the first item name (index 0) to log.
             String itemName = ui.textAt("css", inventoryItemName, 0);
-            System.out.println("Adding to cart: " + itemName + " | data-test=" + dataTest);
+            LogCollector.info("Adding to cart: " + itemName + " | data-test=" + dataTest);
             ui.clickAt("xpath", addButton, 0);
         }
     }

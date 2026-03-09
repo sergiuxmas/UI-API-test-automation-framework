@@ -8,14 +8,16 @@ public final class UiEngineFactory {
     }
 
     public static UiEngine create() {
-        String engine = System.getProperty("browser.engine", "playwright").trim().toLowerCase();
-        switch (engine) {
-            case "playwright":
-                return new PlaywrightEngine();
-            case "selenium":
-                return new SeleniumEngine();
-            default:
-                throw new IllegalArgumentException("Unknown browser.engine=" + engine);
+        String engine = System.getProperty("browser.engine");
+        if (engine == null || engine.isBlank()) {
+            engine = "playwright";
         }
+        engine = engine.toLowerCase();
+
+        return switch (engine) {
+            case "playwright" -> new PlaywrightEngine();
+            case "selenium" -> new SeleniumEngine();
+            default -> throw new IllegalArgumentException("Unknown browser.engine: " + engine);
+        };
     }
 }
