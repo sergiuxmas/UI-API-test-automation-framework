@@ -7,6 +7,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pageObjects.LoginPage;
+import utils.LogCollector;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class UI_LoginStep {
 
     @Given("User is on login page")
     public void user_is_on_login_page() {
-        System.out.println("Lunching browser and site https://www.saucedemo.com/ ");
+        LogCollector.info("Lunching browser and site https://www.saucedemo.com/ ");
         loginPage.open();
     }
 

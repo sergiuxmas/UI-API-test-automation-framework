@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import ui.UiEngine;
+import utils.LogCollector;
 
 import java.time.Duration;
 import java.util.List;
@@ -62,7 +63,7 @@ public class SeleniumEngine implements UiEngine {
     @Override
     public void open(String url) {
         getDriver().navigate().to(url);
-        System.out.println("Current URL: " + getDriver().getCurrentUrl());
+        LogCollector.info("Current URL: " + getDriver().getCurrentUrl());
     }
 
     @Override

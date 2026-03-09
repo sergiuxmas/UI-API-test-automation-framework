@@ -9,6 +9,7 @@ import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseOptions;
 import org.hamcrest.Matchers;
+import utils.LogCollector;
 
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ public class API_Step {
         body.put(data.get(0).get(0), data.get(1).get(0));
         body.put(data.get(0).get(1), data.get(1).get(1));
 
-        System.out.println(body);
+        LogCollector.info(body.toString());
         response = RestAssuredExtension.POSTOpsWithBody(URL, body);
     }
 

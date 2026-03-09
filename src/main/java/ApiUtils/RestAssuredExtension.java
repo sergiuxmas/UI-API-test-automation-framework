@@ -14,7 +14,6 @@ import java.util.Map;
 
 public class RestAssuredExtension {
 
-
     RequestSpecBuilder builder = new RequestSpecBuilder();
     public static RequestSpecification Request;
 
@@ -32,17 +31,13 @@ public class RestAssuredExtension {
         Request = RestAssured.given().spec(requestSpec);
     }
 
-
     public static ResponseOptions<Response> POSTOpsWithBody(String url, Map<String, String> body) throws URISyntaxException {
         Request.body(body);
         return Request.post(new URI(baseURI + basePath + url));
-
     }
-
 
     public static ResponseOptions<Response> GetOps(String URL) throws URISyntaxException {
         return Request.get(new URI(baseURI + basePath + URL));
-
     }
 
     public static ResponseOptions<Response> DeleteOps(String pathParams) throws URISyntaxException {

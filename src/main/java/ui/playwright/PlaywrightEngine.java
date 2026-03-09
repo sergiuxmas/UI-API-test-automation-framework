@@ -3,6 +3,7 @@ package ui.playwright;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import ui.UiEngine;
+import utils.LogCollector;
 import utils.ReadConfigFile;
 
 public class PlaywrightEngine implements UiEngine {
@@ -86,7 +87,7 @@ public class PlaywrightEngine implements UiEngine {
     @Override
     public void open(String url) {
         page.navigate(url);
-        System.out.println("Current URL: " + page.url());
+        LogCollector.info("Current URL: " + page.url());
     }
 
     @Override

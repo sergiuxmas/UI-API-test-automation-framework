@@ -3,6 +3,7 @@ package pageObjects;
 import org.testng.Assert;
 import ui.BasePage;
 import ui.UiEngine;
+import utils.LogCollector;
 
 public class Cart_Page extends BasePage {
 
@@ -25,7 +26,7 @@ public class Cart_Page extends BasePage {
         try {
             Assert.assertEquals(actual, expected);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            LogCollector.error(e.getMessage());
         }
     }
 
