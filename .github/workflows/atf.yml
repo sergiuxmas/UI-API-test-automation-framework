@@ -97,11 +97,11 @@ jobs:
           
           if [ "${{ inputs.profile }}" = "playwright" ]; then
             echo "Running Playwright profile"
-            mvn -B test -Pplaywright
+            mvn -B verify -Pplaywright
           else
             echo "Running Selenium profile"
             export SELENIUM_REMOTE_URL="http://localhost:4444/"
-            mvn -B test -Pselenium
+            mvn -B verify -Pselenium
           fi
 
       - name: Run tests (push/PR default)
@@ -111,7 +111,7 @@ jobs:
         run: |
           echo "Event: ${{ github.event_name }} on ref ${{ github.ref_name }}"
           echo "Defaulting to profile: playwright"
-          mvn -B test -Pplaywright
+          mvn -B verify -Pplaywright
 
       - name: Upload reports
         if: always()
