@@ -24,7 +24,7 @@ public class RestAssuredExtension {
     public RestAssuredExtension() {
         builder.setBaseUri(baseURI);
         builder.setBasePath(basePath);
-        builder.addHeader("x-api-key", "reqres_01fd813fbf3d4b79beee380b409dad3d");
+        builder.addHeader("x-api-key", getRequiredEnv("APIKEY"));
         builder.addHeader("User-Agent", "ui-api-tests/1.0");
         builder.setContentType(ContentType.JSON);
 
@@ -47,6 +47,14 @@ public class RestAssuredExtension {
 
     public static ResponseOptions<Response> DeleteOps(String pathParams) throws URISyntaxException {
         return Request.delete(pathParams);
+    }
+
+    private static String getRequiredEnv(String key) {
+        String value = System.getenv(key);
+        if (value == null || value.isBlank()) {
+            throw new IllegalStateException("Environment variable not set: " + key);
+        }
+        return value;
     }
 
 }

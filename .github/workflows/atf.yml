@@ -23,6 +23,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      APIKEY: ${{ secrets.APIKEY }}
 
     steps:
       - name: Checkout
