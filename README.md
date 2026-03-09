@@ -16,6 +16,8 @@
 <p>docker restart selenium-chrome</p>
 
 <h3>Run</h3>
+<li>export APIKEY="your-real-api-key"</li>
+<li>mvn clean install -DskipTests</li>
 <li>Selenium: mvn test -Pselenium</li>
 <li>Playwright: mvn test -Pplaywright</li>
 <li>VM option: -Dbrowser.engine=playwright or -Dbrowser.engine=selenium</li>
