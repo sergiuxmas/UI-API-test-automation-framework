@@ -16,8 +16,11 @@ public class UI_LoginStep {
 
     public LoginPage loginPage;
 
-    public UI_LoginStep() {
-        this.loginPage = new LoginPage(Hooks.ui());
+    private LoginPage loginPage() {
+        if (loginPage == null) {
+            loginPage = new LoginPage(Hooks.ui());
+        }
+        return loginPage;
     }
 
     @Given("User is on login page")

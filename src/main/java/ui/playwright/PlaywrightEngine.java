@@ -24,7 +24,7 @@ public class PlaywrightEngine implements UiEngine {
         switch (browserName) {
             case "chrome":
                 // Uses installed Chrome if available (no need for bundled chromium)
-                launchOptions.setChannel("chrome");
+//                launchOptions.setChannel("chrome");
                 browser = playwright.chromium().launch(launchOptions);
                 break;
             case "edge":

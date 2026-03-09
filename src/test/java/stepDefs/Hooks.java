@@ -47,14 +47,11 @@ public class Hooks {
     }
 
     public static UiEngine ui() {
-        UiEngine e = ENGINE.get();
-        if (e == null) {
-            throw new IllegalStateException(
-                    "UI engine is not initialized for this thread. "
-                            + "Are you calling Hooks.ui() from a @back-end scenario or missing @front-end tag?"
-            );
+        UiEngine engine = ENGINE.get();
+        if (engine == null) {
+            throw new IllegalStateException("UI Engine is not initialized. Did you tag the scenario with @front-end?");
         }
-        return e;
+        return engine;
     }
 
     private static void safeStop(UiEngine engine) {
